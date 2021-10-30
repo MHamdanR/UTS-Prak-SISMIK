@@ -1,0 +1,41 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+#define echoPin 9
+#define trigPin 8
+
+float jarak;
+float durasi;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  lcd.begin(16, 2); 
+  lcd.setCursor(0, 0); lcd.print("Meteran  Digital");
+  delay(1000);
+  lcd.setCursor(0, 1); lcd.print(" By: HAMDAN");
+  delay(2000);
+  lcd.clear(); 
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  durasi = pulseIn(echoPin, HIGH);
+  jarak = (durasi/2) / 2910; //perhitungan pembacaan jarak
+  Serial.print(jarak);
+  Serial.print(" m");
+  
+  lcd.setCursor(0, 0);
+  lcd.print("Pengukuran Jarak");
+  lcd.setCursor(0, 1);
+  lcd.print("Jarak = ");
+  lcd.print(jarak);
+  lcd.print("m ");
+  delay(1000);
+}
